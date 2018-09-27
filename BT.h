@@ -2,12 +2,14 @@
 #include "node.h"
 using namespace std;
 
+//In this code we are are assuming that the tree is not empty when functions are called
+
 struct BT{
   node* root = nullptr;
   node* head = nullptr;
 
+//Construction of Tree
   void constructTree(int data){
-
     if(!root){
       head=root=GetnewNode(data);
     }
@@ -37,6 +39,164 @@ struct BT{
     }
   }
 
+//Prints
+  void printInOrder(node* it){
+
+      if(it->left){
+        printInOrder(it->left);
+      }
+      cout << it->data << " ";
+      if(it->right){
+        printInOrder(it->right);
+      }
+
+  }
+
+  void printPreOrder(node* it){
+
+      cout << it->data << " ";
+      if(it->left){
+        printPreOrder(it->left);
+      }
+      if(it->right){
+        printPreOrder(it->right);
+      }
+
+  }
+
+  void printPostOrder(node* it){
+
+      if(it->left){
+        printPostOrder(it->left);
+      }
+      if(it->right){
+        printPostOrder(it->right);
+      }
+      cout << it->data << " ";
+
+  }
+
+  void printTree(){
+    cout << "In Order: ";
+    printInOrder(root);
+
+    cout << endl;
+
+    cout << "Pre Order: ";
+    printPreOrder(root);
+
+    cout << endl;
+
+    cout << "Post Order: ";
+    printPostOrder(root);
+
+  }
+
+//Remove
+  int findSmallest(node* it){
+    if(it->left != nullptr){
+      return findSmallest(it->left);
+    }
+    else{
+      return it->data;
+    }
+  }
+
+  void removeNode(int data, node* parent){
+    if(root->data==data){
+      removeRootNode();
+    }
+    else{
+      if(data < parent->data and parent->left != nullptr){
+        parent->left->data == data ?
+        removeMatch(parent, parent->left, true):
+        removeNode(data, parent->left);
+      }
+      else if(data > parent->data and parent->right != nullptr){
+        parent->right->data == data ?
+        removeMatch(parent, parent->right, false):
+        removeNode(data, parent->right);
+      }
+      else{
+        cout << "Number " << data << " not found";
+      }
+    }
+  }
+
+  void removeRootNode(){
+    node* ripPtr = root;
+    int rootReplacement;
+
+    //Case no children
+    if(root->left==nullptr and root->right==nullptr){
+      root=nullptr;
+      delete ripPtr;
+    }
+    //Case 1 children
+    else if(root->right && root->left==nullptr){//no hay left pero si right
+      root = root->right;
+      ripPtr->right=nullptr;
+      delete ripPtr;
+    }
+    else if(root->left && root->right==nullptr){//no hay right pero si left
+      root = root->left;
+      ripPtr->left=nullptr;
+      delete ripPtr;
+    }
+
+    //Case 2 children
+    else{
+      rootReplacement = findSmallest(root->right);
+      removeNode(rootReplacement, root);
+      root->data =rootReplacement;
+    }
+
+  }
+
+  void removeMatch(node* parent, node* match, bool left){
+    node* ripPtr;
+    int matchReplacement;
+
+    //Case no children
+    if(match->left==nullptr and match->right==nullptr){
+      ripPtr = match;
+      left == true ?
+      parent->left= nullptr:
+      parent->right=nullptr;
+      delete ripPtr;
+    }
+
+    //Case 1 children
+    else if(match->right && match->left==nullptr){//no hay left pero si right
+      left == true ?
+      parent->left=match->right:
+      parent->right=match->right;
+      match->right=nullptr;
+      ripPtr=match;
+      delete ripPtr;
+    }
+    else if(match->left && match->right==nullptr){//no hay right pero si left
+      left == true ?
+      parent->left=match->left:
+      parent->right=match->left;
+      match->left=nullptr;
+      ripPtr=match;
+      delete ripPtr;
+    }
+
+    //Case 2 children
+    else{
+      matchReplacement = findSmallest(match->right);
+      removeNode(matchReplacement, match);
+      match->data =matchReplacement;
+    }
+  }
+
+  void remove(int data){
+    removeNode(data, root);
+  }
+
+//Pretty print code found on the internet
 #define COUNT 10
   void print2DUtil(node *root, int space){
     // Base case
@@ -67,7 +227,9 @@ struct BT{
      print2DUtil(root, 0);
   }
 
-  void printTree(){
+
+  void PrintTreeInternet(){
     print2D(root);
   }
+
 };

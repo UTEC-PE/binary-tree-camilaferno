@@ -1,3 +1,6 @@
+#ifndef NODE_H
+#define NODE_H
+
 #include <iostream>
 #include <string.h>
 using namespace std;
@@ -16,3 +19,5 @@ node* GetnewNode(int idata){
 
   return newNode;
 }
+
+#endif

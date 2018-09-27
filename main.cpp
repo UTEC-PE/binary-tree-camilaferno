@@ -2,29 +2,29 @@
 #include "BT.h"
 using namespace std;
 
-
-// bool Search(node* root, int data){
-//   if(root == nullptr) return false;
-//   else if(root->data==data) return true;
-//   else if(data <= root->data) return Search(root->left,data);
-//   else return Search(root->right, data);
-// }
-
+/*
+1. Insertar
+2. Eliminar
+3. Peso
+4. Iterador in-order
+5. print inorder, postorder, preorder
+*/
 
 int main(int argc, char const *argv[]) {
 
-  BT BT;
+  BT bT;
 
-  BT.constructTree(10);
-  BT.constructTree(20);
-  BT.constructTree(11);
-  BT.constructTree(5);
-  BT.constructTree(6);
+  bT.constructTree(10);
+  bT.constructTree(20);
+  bT.constructTree(11);
+  bT.constructTree(5);
+  bT.constructTree(6);
 
-  // if(Search(root, 2)) cout << "found";
-  // else cout << "Not";
 
-  BT.printTree();
+  bT.remove(6);
+
+  bT.PrintTreeInternet();
+
 
 
   return 0;

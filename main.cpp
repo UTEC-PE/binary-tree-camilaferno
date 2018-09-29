@@ -19,10 +19,10 @@ int main(int argc, char const *argv[]) {
   bT.constructTree(11);
   bT.constructTree(5);
   bT.constructTree(6);
+  bT.constructTree(4);
+  bT.constructTree(1);
 
-
-  bT.remove(6);
-
+  bT.remove(5);
   bT.PrintTreeInternet();
 
 

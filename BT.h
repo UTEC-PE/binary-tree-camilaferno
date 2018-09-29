@@ -7,6 +7,8 @@ using namespace std;
 struct BT{
   node* root = nullptr;
   node* head = nullptr;
+  int rightweight = 0;
+  int leftweight = 0;
 
 //Construction of Tree
   void constructTree(int data){
@@ -93,9 +95,9 @@ struct BT{
   }
 
 //Remove
-  int findSmallest(node* it){
+  int findSmallestInRight(node* it){
     if(it->left != nullptr){
-      return findSmallest(it->left);
+      return findSmallestInRight(it->left);
     }
     else{
       return it->data;
@@ -110,7 +112,7 @@ struct BT{
       if(data < parent->data and parent->left != nullptr){
         parent->left->data == data ?
         removeMatch(parent, parent->left, true):
-        removeNode(data, parent->left);
+        removeNode(data, parent->left); //itera hasta que apunte al match
       }
       else if(data > parent->data and parent->right != nullptr){
         parent->right->data == data ?
@@ -146,7 +148,7 @@ struct BT{
 
     //Case 2 children
     else{
-      rootReplacement = findSmallest(root->right);
+      rootReplacement = findSmallestInRight(root->right);
       removeNode(rootReplacement, root);
       root->data =rootReplacement;
     }
@@ -186,7 +188,7 @@ struct BT{
 
     //Case 2 children
     else{
-      matchReplacement = findSmallest(match->right);
+      matchReplacement = findSmallestInRight(match->right);
       removeNode(matchReplacement, match);
       match->data =matchReplacement;
     }

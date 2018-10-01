@@ -22,8 +22,13 @@ int main(int argc, char const *argv[]) {
   bT.constructTree(4);
   bT.constructTree(1);
 
-  bT.remove(5);
-  bT.PrintTreeInternet();
+
+  Iterator<int> It=bT.root;
+
+  cout << *It << " ";
+  for (int i=0; i<bT.Printweight()-1; i++){
+    cout << *++It << " ";
+  }
 
 
 

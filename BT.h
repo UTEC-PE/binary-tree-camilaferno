@@ -1,5 +1,6 @@
 #include <iostream>
 #include "node.h"
+#include"iterator.h"
 using namespace std;
 
 //In this code we are are assuming that the tree is not empty when functions are called
@@ -7,8 +8,7 @@ using namespace std;
 struct BT{
   node* root = nullptr;
   node* head = nullptr;
-  int rightweight = 0;
-  int leftweight = 0;
+  int weight = 0;
 
 //Construction of Tree
   void constructTree(int data){
@@ -25,6 +25,7 @@ struct BT{
       else{
         head=head->left;
         constructTree(data);
+        weight -=1;
       }
     }
 
@@ -37,8 +38,10 @@ struct BT{
       else{
         head=head->right;
         constructTree(data);
+        weight-=1;
       }
     }
+    weight+=1;
   }
 
 //Prints
@@ -94,7 +97,7 @@ struct BT{
 
   }
 
-//Remove
+//Remove credits to https://www.youtube.com/watch?v=GaT8uMDtEZo for the algorithm
   int findSmallestInRight(node* it){
     if(it->left != nullptr){
       return findSmallestInRight(it->left);
@@ -133,17 +136,20 @@ struct BT{
     if(root->left==nullptr and root->right==nullptr){
       root=nullptr;
       delete ripPtr;
+      weight-=1;
     }
     //Case 1 children
     else if(root->right && root->left==nullptr){//no hay left pero si right
       root = root->right;
       ripPtr->right=nullptr;
       delete ripPtr;
+      weight-=1;
     }
     else if(root->left && root->right==nullptr){//no hay right pero si left
       root = root->left;
       ripPtr->left=nullptr;
       delete ripPtr;
+      weight-=1;
     }
 
     //Case 2 children
@@ -166,6 +172,7 @@ struct BT{
       parent->left= nullptr:
       parent->right=nullptr;
       delete ripPtr;
+      weight-=1;
     }
 
     //Case 1 children
@@ -176,6 +183,7 @@ struct BT{
       match->right=nullptr;
       ripPtr=match;
       delete ripPtr;
+      weight-=1;
     }
     else if(match->left && match->right==nullptr){//no hay right pero si left
       left == true ?
@@ -184,6 +192,7 @@ struct BT{
       match->left=nullptr;
       ripPtr=match;
       delete ripPtr;
+      weight-=1;
     }
 
     //Case 2 children
@@ -232,6 +241,10 @@ struct BT{
 
   void PrintTreeInternet(){
     print2D(root);
+  }
+
+  int Printweight(){
+    return weight;
   }
 
 };

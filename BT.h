@@ -5,7 +5,7 @@ using namespace std;
 
 //In this code we are are assuming that the tree is not empty when functions are called
 
-struct BT{
+struct BT{ // Falta destructor, por qué dejaste todo público?
   node* root = nullptr;
   node* head = nullptr;
   int weight = 0;

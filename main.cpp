@@ -1,36 +1,100 @@
 #include <iostream>
+#include <algorithm>    
+#include <vector>
+#include <random>
+#include <assert.h>
+
 #include "BT.h"
+
 using namespace std;
 
-/*
-1. Insertar
-2. Eliminar
-3. Peso
-4. Iterador in-order
-5. print inorder, postorder, preorder
-*/
+#define RANGE_MIN 100
+#define RANGE_MAX 500
+#define MIN_NUMBER 0
+#define MAX_NUMBER 500
 
-int main(int argc, char const *argv[]) {
+mt19937 rng;
+vector<int> helper;
 
-  BT bT;
+int generateRandomInt(int min, int max);
+void insertIntoTree(BT &tester);
+void removeFromTree(BT &tester);
+void sortAndPruneHelper();
+bool testTreeCompletion(BT* tester);
+void print(BT* tester);
 
-  bT.constructTree(10);
-  bT.constructTree(20);
-  bT.constructTree(11);
-  bT.constructTree(5);
-  bT.constructTree(6);
-  bT.constructTree(4);
-  bT.constructTree(1);
+int main(int argc, char *argv[]) {
+    rng.seed(random_device()());
+    cout << "===========================================================" << endl;
+    cout << "\tBinary Tree Practice" << endl;
+    cout << "===========================================================" << endl << endl;
 
+    BT tester;
+    const int numberOfElements = generateRandomInt(RANGE_MIN, RANGE_MAX);
+    for (int i = 0; i < numberOfElements; i++) {
+        insertIntoTree(tester); // Hay problemas con el insert, debiste probar más casos
+    }
+    sortAndPruneHelper();
 
-  Iterator<int> It=bT.root;
+    /*assert(tester.Printweight() == helper.size() && "Something is wrong with the insert or weight method");
 
-  cout << *It << " ";
-  for (int i=0; i<bT.Printweight()-1; i++){
-    cout << *++It << " ";
-  }
+    assert(testTreeCompletion(&tester) && "Something is wrong with the insert method or the iterator");
 
+    const int elementsToRemove = generateRandomInt(0, helper.size() - 1);
+    for (int i = 0; i < elementsToRemove; i++) {
+        removeFromTree(tester);
+    }
 
+    assert(testTreeCompletion(&tester) && "Something is wrong with the remove method or the iterator");*/
 
-  return 0;
+    print(&tester);
+
+    return EXIT_SUCCESS;
+}
+
+int generateRandomInt(int min, int max) {
+    uniform_int_distribution<mt19937::result_type> distribution(min, max);
+    return distribution(rng);
+}
+
+void insertIntoTree(BT &tester) {
+    const int numberToInsert = generateRandomInt(MIN_NUMBER, MAX_NUMBER);
+    helper.push_back(numberToInsert);
+    tester.constructTree(numberToInsert);
+}
+
+void removeFromTree(BT &tester) {
+    const int positionToRemove = generateRandomInt(0, helper.size() - 1);
+    const int element = helper.at(positionToRemove);
+    helper.erase(helper.begin() + positionToRemove);
+    tester.remove(element);
+}
+
+void sortAndPruneHelper() {
+    sort(helper.begin(), helper.end());
+    auto last = std::unique(helper.begin(), helper.end());
+    helper.erase(last, helper.end()); 
+}
+
+bool testTreeCompletion(BT* tester) {
+    Iterator<int> It=tester->root; // Así no funciona un iterator
+    for (int i=0; i<tester->Printweight()-1; i++){
+        if (*It != helper.at(i)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void print(BT* tester) {
+    Iterator<int> It=tester->root; // Así no funciona un iterator
+    for (int i=0; i<tester->Printweight()-1; i++){
+        cout << *It << " ";
+    }
+    cout << endl << endl;
+
+    for (int i = 0; i < helper.size(); i++) {
+        cout << helper.at(i) << " ";
+    }
+    cout << endl;
 }
